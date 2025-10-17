@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personal Finance Chatbot</title>
+    <style>
+      @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      /* THEME DEFINITIONS */
+      body[data-theme='neo-finance-blue'] {
+        --color-primary: #2F80ED;
+        --color-secondary: #56CCF2;
+        --color-accent: #00C9A7;
+        --color-bg-primary: #0F2027;
+        --color-bg-secondary: #203A43;
+        --color-bg-tertiary: #2C5364;
+        --color-text-primary: #E0E0E0;
+        --color-text-secondary: #BDBDBD;
+        --color-border: #4F4F4F;
+        --color-success: #27AE60;
+        --color-warning: #F2C94C;
+        --color-error: #EB5757;
+        --color-chart-1: #F43F5E;
+        --color-chart-2: #F59E0B;
+        --color-chart-3: #0EA5E9;
+        --color-chart-4: #10B981;
+        --color-chart-5: #64748B;
+        --color-scrollbar-thumb: #2C5364;
+        --color-scrollbar-track: #0F2027;
+        --gradient-color-1: var(--color-primary);
+        --gradient-color-2: var(--color-secondary);
+        --gradient-color-3: var(--color-accent);
+      }
+      body[data-theme='solar-flare'] {
+        --color-primary: #EB5757;
+        --color-secondary: #F2994A;
+        --color-accent: #F2C94C;
+        --color-bg-primary: #121212;
+        --color-bg-secondary: #1E1E1E;
+        --color-bg-tertiary: #2A2A2A;
+        --color-text-primary: #FFFFFF;
+        --color-text-secondary: #A0A0A0;
+        --color-border: #444444;
+        --color-success: #6FCF97;
+        --color-warning: #F2C94C;
+        --color-error: #EB5757;
+        --color-chart-1: #EB5757;
+        --color-chart-2: #F2994A;
+        --color-chart-3: #F2C94C;
+        --color-chart-4: #BB6BD9;
+        --color-chart-5: #9B9B9B;
+        --color-scrollbar-thumb: #2A2A2A;
+        --color-scrollbar-track: #121212;
+        --gradient-color-1: var(--color-primary);
+        --gradient-color-2: var(--color-secondary);
+        --gradient-color-3: var(--color-accent);
+      }
+      body[data-theme='monochrome-alert'] {
+        --color-primary: #27AE60;
+        --color-secondary: #6FCF97;
+        --color-accent: #F2C94C;
+        --color-bg-primary: #1B1B1B;
+        --color-bg-secondary: #2B2B2B;
+        --color-bg-tertiary: #3C3C3C;
+        --color-text-primary: #F2F2F2;
+        --color-text-secondary: #BDBDBD;
+        --color-border: #4D4D4D;
+        --color-success: #27AE60;
+        --color-warning: #F2C94C;
+        --color-error: #EB5757;
+        --color-chart-1: #27AE60;
+        --color-chart-2: #6FCF97;
+        --color-chart-3: #F2C94C;
+        --color-chart-4: #2D9CDB;
+        --color-chart-5: #BDBDBD;
+        --color-scrollbar-thumb: #3C3C3C;
+        --color-scrollbar-track: #1B1B1B;
+        --gradient-color-1: var(--color-primary);
+        --gradient-color-2: var(--color-secondary);
+        --gradient-color-3: var(--color-accent);
+      }
+      body[data-theme='minimal-light'] {
+        --color-primary: #0078FF;
+        --color-secondary: #00C9A7;
+        --color-accent: #00C9A7;
+        --color-bg-primary: #F9FAFB;
+        --color-bg-secondary: #FFFFFF;
+        --color-bg-tertiary: #F3F4F6;
+        --color-text-primary: #1A1A1A;
+        --color-text-secondary: #6B7280;
+        --color-border: #E5E7EB;
+        --color-success: #16A34A;
+        --color-warning: #F59E0B;
+        --color-error: #DC2626;
+        --color-chart-1: #F43F5E;
+        --color-chart-2: #F59E0B;
+        --color-chart-3: #0EA5E9;
+        --color-chart-4: #10B981;
+        --color-chart-5: #64748B;
+        --color-scrollbar-thumb: #D1D5DB;
+        --color-scrollbar-track: #F9FAFB;
+        --gradient-color-1: var(--color-primary);
+        --gradient-color-2: var(--color-secondary);
+        --gradient-color-3: #E0F2FE; /* A light blue for a softer gradient in light mode */
+      }
+
+      .bg-gradient-theme {
+        background: linear-gradient(270deg, var(--gradient-color-1), var(--gradient-color-2), var(--gradient-color-3));
+        background-size: 600% 600%;
+        animation: gradientShift 10s ease infinite;
+      }
+
+      .text-shadow { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+      .text-shadow-md { text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); }
+
+      .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: var(--color-scrollbar-track); }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: var(--color-scrollbar-thumb);
+        border-radius: 20px;
+        border: 2px solid var(--color-scrollbar-track);
+        transition: background-color 0.2s;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: color-mix(in srgb, var(--color-scrollbar-thumb) 80%, white 20%);
+      }
+      .custom-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: 'var(--color-primary)',
+              secondary: 'var(--color-secondary)',
+              accent: 'var(--color-accent)',
+              'background-primary': 'var(--color-bg-primary)',
+              'background-secondary': 'var(--color-bg-secondary)',
+              'background-tertiary': 'var(--color-bg-tertiary)',
+              'text-primary': 'var(--color-text-primary)',
+              'text-secondary': 'var(--color-text-secondary)',
+              border: 'var(--color-border)',
+              success: 'var(--color-success)',
+              warning: 'var(--color-warning)',
+              error: 'var(--color-error)',
+              'chart-1': 'var(--color-chart-1)',
+              'chart-2': 'var(--color-chart-2)',
+              'chart-3': 'var(--color-chart-3)',
+              'chart-4': 'var(--color-chart-4)',
+              'chart-5': 'var(--color-chart-5)',
+            }
+          }
+        }
+      }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.25.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

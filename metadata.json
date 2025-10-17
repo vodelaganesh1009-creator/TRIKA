@@ -1,0 +1,5 @@
+{
+  "name": "Personal Finance Chatbot",
+  "description": "An intelligent conversational AI that provides personalized financial guidance on savings, taxes, and investments. It adapts its tone for students and professionals to offer tailored advice and insights.",
+  "requestFramePermissions": []
+}
